@@ -1,0 +1,17 @@
+[package]
+name = "egui_widgets"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = ["option_value", "list_viewer", "list_editor"]
+
+option_value = []
+list_viewer = []
+list_editor = ["dep:serde"]
+
+
+[dependencies]
+egui = { version = "0.21", default-features = false }
+serde = { version = "1", features = ["derive"], optional = true }

@@ -27,7 +27,7 @@ impl<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> ListViewer<'a, W, L>
 }
 
 impl<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> ListViewer<'a, W, L> {
-    pub fn ui(self, ui: &mut egui::Ui) -> egui::InnerResponse<Option<&'a W>> {
+    pub fn show(self, ui: &mut egui::Ui) -> egui::InnerResponse<Option<&'a W>> {
         let ListViewer {
             container,
             data,

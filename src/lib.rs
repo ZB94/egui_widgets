@@ -9,3 +9,6 @@ mod option_value;
 
 #[cfg(feature = "option_value")]
 pub use option_value::OptionValue;
+
+#[cfg(feature = "tracing")]
+pub use egui_tracing as tracing;

@@ -5,13 +5,15 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [features]
-default = ["option_value", "list_viewer", "list_editor"]
+default = ["option_value", "list_viewer"]
 
 option_value = []
 list_viewer = []
 list_editor = ["dep:serde"]
+tracing = ["dep:egui_tracing"]
 
 
 [dependencies]
 egui = { version = "0.21", default-features = false }
+egui_tracing = { git = "https://github.com/ZB94/egui_tracing", tag = "v0.3.0", optional = true }
 serde = { version = "1", features = ["derive"], optional = true }

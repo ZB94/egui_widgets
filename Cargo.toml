@@ -22,7 +22,7 @@ tracing = ["dep:egui_tracing"]
 
 [dependencies]
 egui = { workspace = true }
-egui_tracing = { path = "egui_tracing", optional = true }
+egui_tracing = { version = "0.4.0", path = "egui_tracing", optional = true }
 parking_lot = "0.12.1"
 serde = { version = "1", features = ["derive"], optional = true }
 

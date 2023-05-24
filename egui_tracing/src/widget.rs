@@ -140,11 +140,11 @@ impl Widget for &mut EguiLog {
                         .num_columns(5)
                         .striped(true)
                         .show(ui, |ui| {
-                            ui.heading(&self.display_info.level);
-                            ui.heading(&self.display_info.time);
-                            ui.heading(&self.display_info.span_data);
-                            ui.heading(&self.display_info.data);
-                            ui.heading(&self.display_info.message);
+                            ui.label(RichText::new(&self.display_info.level).strong());
+                            ui.label(RichText::new(&self.display_info.time).strong());
+                            ui.label(RichText::new(&self.display_info.span_data).strong());
+                            ui.label(RichText::new(&self.display_info.data).strong());
+                            ui.label(RichText::new(&self.display_info.message).strong());
                             ui.end_row();
 
                             for log in self.log_list.iter().rev() {

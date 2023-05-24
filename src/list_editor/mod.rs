@@ -24,6 +24,11 @@ pub struct UiText {
     pub copy: &'static str,
 }
 
+/// 设置界面上UI的文字
+pub fn set_ui_text(ui_text: UiText) {
+    *UI_TEXT.write() = ui_text;
+}
+
 #[derive(Debug)]
 pub struct ListEditor<'a, W: ListEditorItem, C: ListEditorContainer<W>> {
     pub container: &'a mut C,
@@ -43,11 +48,6 @@ impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> ListEditor<'a, 
     pub fn default_open(mut self) -> Self {
         self.default_open = true;
         self
-    }
-
-    /// 设置界面上UI的文字
-    pub fn set_ui_text(ui_text: UiText) {
-        *UI_TEXT.write() = ui_text;
     }
 }
 

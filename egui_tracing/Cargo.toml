@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 chrono = { version = "0.4.23", default-features = false, features = ["clock"] }
 crossbeam-channel = "0.5.6"
-egui = { worksapce = true }
+egui = { workspace = true }
 parking_lot = "0.12.1"
 tracing = { version = "0.1.37", default-features = false }
 tracing-subscriber = { version = "0.3.16", default-features = false, features = ["registry"] }

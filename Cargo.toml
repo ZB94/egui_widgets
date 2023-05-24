@@ -21,6 +21,6 @@ tracing = ["dep:egui_tracing"]
 
 
 [dependencies]
-egui = { worksapce = true }
+egui = { workspace = true }
 egui_tracing = { path = "egui_tracing", optional = true }
 serde = { version = "1", features = ["derive"], optional = true }

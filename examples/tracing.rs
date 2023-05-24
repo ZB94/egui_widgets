@@ -3,7 +3,7 @@ extern crate tracing;
 
 use eframe::{App, Frame};
 use egui::{CentralPanel, Context};
-use egui_tracing::{DisplayInfo, EguiLog};
+use egui_widgets::tracing::{DisplayInfo, EguiLog};
 use tracing::Span;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -12,12 +12,12 @@ use tracing_subscriber::{EnvFilter, Layer};
 fn main() {
     let (layer, mut widget) = egui_tracing::EguiLayer::new(10);
     widget.display_info = DisplayInfo {
-        filter: "f".to_string(),
-        level: "l".to_string(),
-        time: "t".to_string(),
-        span_data: "sd".to_string(),
-        data: "d".to_string(),
-        message: "m".to_string(),
+        filter: "log filter".to_string(),
+        level: "log level".to_string(),
+        time: "log time".to_string(),
+        span_data: "log span data".to_string(),
+        data: "log data".to_string(),
+        message: "log message".to_string(),
     };
 
     let layer = layer.with_filter(

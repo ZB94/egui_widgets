@@ -1,7 +1,10 @@
 use egui::{Id, Label, RichText, ScrollArea, TextEdit};
 pub use item::ListViewerItem;
+use parking_lot::RwLock;
 
 mod item;
+
+static SEARCH_HINT_TEXT: RwLock<&'static str> = RwLock::new("search");
 
 #[derive(Debug)]
 pub struct ListViewer<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> {
@@ -23,6 +26,11 @@ impl<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> ListViewer<'a, W, L>
     pub fn max_height(mut self, height: f32) -> Self {
         self.height = height;
         self
+    }
+
+    /// 设置搜索框为空时显示的占位文字
+    pub fn set_search_hint_text(text: &'static str) {
+        *SEARCH_HINT_TEXT.write() = text;
     }
 }
 
@@ -47,7 +55,7 @@ impl<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> ListViewer<'a, W, L>
 
             ui.horizontal_top(|ui| {
                 ui.add(Label::new(RichText::new(W::title()).strong()));
-                ui.add(TextEdit::singleline(&mut search).hint_text("搜索"));
+                ui.add(TextEdit::singleline(&mut search).hint_text(*SEARCH_HINT_TEXT.read()));
             });
 
             ui.separator();

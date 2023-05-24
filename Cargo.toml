@@ -23,4 +23,26 @@ tracing = ["dep:egui_tracing"]
 [dependencies]
 egui = { workspace = true }
 egui_tracing = { path = "egui_tracing", optional = true }
+parking_lot = "0.12.1"
 serde = { version = "1", features = ["derive"], optional = true }
+
+[dev-dependencies]
+eframe = "0.22"
+tracing = "0.1.37"
+tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
+
+[[example]]
+name = "option_value"
+required-features = ["option_value"]
+
+[[example]]
+name = "list_viewer"
+required-features = ["list_viewer"]
+
+[[example]]
+name = "list_editor"
+required-features = ["list_editor"]
+
+[[example]]
+name = "tracing"
+required-features = ["tracing"]

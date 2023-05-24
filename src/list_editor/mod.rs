@@ -4,6 +4,7 @@ use egui::{
     epaint::{pos2, vec2, Rect, Shape, Stroke},
     Layout, Response, Sense, TextStyle, Ui, Widget,
 };
+use parking_lot::RwLock;
 use serde::{Deserialize, Serialize};
 
 mod container;
@@ -11,6 +12,17 @@ mod item;
 
 pub use container::ListEditorContainer;
 pub use item::ListEditorItem;
+
+static UI_TEXT: RwLock<UiText> = RwLock::new(UiText::DEFAULT);
+
+#[derive(Debug, Clone, Copy)]
+pub struct UiText {
+    pub add: &'static str,
+    pub reset: &'static str,
+    pub filter: &'static str,
+    pub delete: &'static str,
+    pub copy: &'static str,
+}
 
 #[derive(Debug)]
 pub struct ListEditor<'a, W: ListEditorItem, C: ListEditorContainer<W>> {
@@ -32,6 +44,11 @@ impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> ListEditor<'a, 
         self.default_open = true;
         self
     }
+
+    /// 设置界面上UI的文字
+    pub fn set_ui_text(ui_text: UiText) {
+        *UI_TEXT.write() = ui_text;
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Default, Clone)]
@@ -43,6 +60,8 @@ pub struct ListEditorUiData<W: ListEditorItem> {
 impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> Widget for ListEditor<'a, W, C> {
     fn ui(self, ui: &mut Ui) -> Response {
         ui.vertical(|ui| {
+            let ui_text = *UI_TEXT.read();
+
             let ListEditor {
                 container,
                 data,
@@ -63,13 +82,13 @@ impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> Widget for List
                 CollapsingState::load_with_default_open(ui.ctx(), id.with("new"), default_open);
             let resp = ui.horizontal_top(|ui| {
                 ui.with_layout(Layout::right_to_left(Align::TOP), |ui| {
-                    if ui.button("添加").clicked() {
+                    if ui.button(ui_text.add).clicked() {
                         let mut new = W::new(data).unwrap_or_default();
                         std::mem::swap(&mut ui_data.new, &mut new);
                         container.add(new);
                     }
 
-                    if ui.button("重置").clicked() {
+                    if ui.button(ui_text.reset).clicked() {
                         ui_data.new = W::new(data).unwrap_or_default();
                     }
 
@@ -87,7 +106,7 @@ impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> Widget for List
             ui.separator();
 
             ui.horizontal(|ui| {
-                ui.label("筛选");
+                ui.label(ui_text.filter);
                 ui.text_edit_singleline(&mut ui_data.search);
             });
 
@@ -105,11 +124,11 @@ impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> Widget for List
                 let mut state = CollapsingState::load_with_default_open(ui.ctx(), id, false);
                 let resp = ui.horizontal_top(|ui| {
                     ui.with_layout(Layout::right_to_left(Align::TOP), |ui| {
-                        if ui.button("删除").clicked() {
+                        if ui.button(ui_text.delete).clicked() {
                             remove = true;
                         }
 
-                        if ui.button("复制").clicked() {
+                        if ui.button(ui_text.copy).clicked() {
                             new_list.push(w.clone());
                         }
 
@@ -195,4 +214,20 @@ pub fn paint_title(text: String, ui: &mut Ui, openness: f32) -> Response {
         .galley_with_color(pos, galley, visuals.fg_stroke.color);
 
     response
+}
+
+impl UiText {
+    pub const DEFAULT: UiText = UiText {
+        add: "Add",
+        reset: "Reset",
+        filter: "Filter",
+        delete: "Delete",
+        copy: "Copy",
+    };
+}
+
+impl Default for UiText {
+    fn default() -> Self {
+        Self::DEFAULT
+    }
 }

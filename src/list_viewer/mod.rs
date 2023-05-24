@@ -6,6 +6,11 @@ mod item;
 
 static SEARCH_HINT_TEXT: RwLock<&'static str> = RwLock::new("search");
 
+/// 设置搜索框为空时显示的占位文字
+pub fn set_search_hint_text(text: &'static str) {
+    *SEARCH_HINT_TEXT.write() = text;
+}
+
 #[derive(Debug)]
 pub struct ListViewer<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> {
     pub container: L,
@@ -26,11 +31,6 @@ impl<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> ListViewer<'a, W, L>
     pub fn max_height(mut self, height: f32) -> Self {
         self.height = height;
         self
-    }
-
-    /// 设置搜索框为空时显示的占位文字
-    pub fn set_search_hint_text(text: &'static str) {
-        *SEARCH_HINT_TEXT.write() = text;
     }
 }
 

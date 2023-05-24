@@ -4,6 +4,13 @@ version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[workspace]
+members = ["egui_tracing"]
+
+[workspace.dependencies]
+egui = { version = "0.22", default-features = false }
+
+
 [features]
 default = ["option_value", "list_viewer"]
 
@@ -14,6 +21,6 @@ tracing = ["dep:egui_tracing"]
 
 
 [dependencies]
-egui = { version = "0.21", default-features = false }
-egui_tracing = { git = "https://github.com/ZB94/egui_tracing", tag = "v0.3.0", optional = true }
+egui = { worksapce = true }
+egui_tracing = { path = "egui_tracing", optional = true }
 serde = { version = "1", features = ["derive"], optional = true }

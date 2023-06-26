@@ -26,7 +26,9 @@ struct Application {
 impl App for Application {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         CentralPanel::default().show(ctx, |ui| {
-            ListViewer::new(self.list.iter(), ()).show(ui);
+            ui.horizontal_top(|ui| {
+                ListViewer::new(self.list.iter(), ()).show(ui);
+            });
         });
     }
 }

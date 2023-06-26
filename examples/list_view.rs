@@ -1,10 +1,10 @@
 use eframe::App;
 use egui::CentralPanel;
-use egui_widgets::list_viewer::{ListViewer, ListViewerItem};
+use egui_widgets::list_view::{ListView, ListViewItem};
 
 fn main() {
     let _ = eframe::run_native(
-        "ListViewer Example",
+        "ListView Example",
         Default::default(),
         Box::new(|_| {
             Box::new(Application {
@@ -27,7 +27,7 @@ impl App for Application {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         CentralPanel::default().show(ctx, |ui| {
             ui.horizontal_top(|ui| {
-                ListViewer::new(self.list.iter(), ()).show(ui);
+                ListView::new(self.list.iter(), ()).show(ui);
             });
         });
     }
@@ -38,7 +38,7 @@ pub struct Item {
     pub name: String,
 }
 
-impl ListViewerItem for Item {
+impl ListViewItem for Item {
     type Data<'a> = ();
 
     fn title() -> &'static str {

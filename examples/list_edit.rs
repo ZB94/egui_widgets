@@ -1,10 +1,10 @@
 use eframe::App;
 use egui::{CentralPanel, DragValue, Grid, ScrollArea};
-use egui_widgets::list_editor::{ListEditor, ListEditorItem};
+use egui_widgets::list_edit::{ListEdit, ListEditItem};
 
 fn main() {
     let _ = eframe::run_native(
-        "ListEditor Example",
+        "ListEdit Example",
         Default::default(),
         Box::new(|_| {
             Box::new(Application {
@@ -26,7 +26,7 @@ struct Application {
 impl App for Application {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         CentralPanel::default().show(ctx, |ui| {
-            ScrollArea::vertical().show(ui, |ui| ui.add(ListEditor::new(&mut self.list, ())));
+            ScrollArea::vertical().show(ui, |ui| ui.add(ListEdit::new(&mut self.list, ())));
         });
     }
 }
@@ -37,7 +37,7 @@ struct Item {
     pub name: String,
 }
 
-impl ListEditorItem for Item {
+impl ListEditItem for Item {
     type Data<'a> = ();
 
     fn new_title(&self, _data: Self::Data<'_>) -> String {

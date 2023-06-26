@@ -1,6 +1,6 @@
 use egui::{ScrollArea, Widget};
 
-pub struct SelectEditor<'a, S, L>
+pub struct SelectEdit<'a, S, L>
 where
     S: ToString,
     L: Iterator<Item = S>,
@@ -10,7 +10,7 @@ where
     pub filter: bool,
 }
 
-impl<'a, S, L> SelectEditor<'a, S, L>
+impl<'a, S, L> SelectEdit<'a, S, L>
 where
     S: ToString,
     L: Iterator<Item = S>,
@@ -31,7 +31,7 @@ where
     }
 }
 
-impl<'a, S, L> Widget for SelectEditor<'a, S, L>
+impl<'a, S, L> Widget for SelectEdit<'a, S, L>
 where
     S: ToString,
     L: Iterator<Item = S>,

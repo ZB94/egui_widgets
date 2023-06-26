@@ -16,12 +16,12 @@ ui.add(OptionValue::new_full(
 ![](images/option_value.gif)
 
 
-# SelectEditor
+# SelectEdit
 
 ```rust
-use egui_widgets::SelectEditor;
+use egui_widgets::SelectEdit;
 
-ui.add(SelectEditor::new(
+ui.add(SelectEdit::new(
     &mut self.text,
     ('a'..='z')
         .enumerate()
@@ -29,7 +29,7 @@ ui.add(SelectEditor::new(
 ));
 
 ui.add(
-    SelectEditor::new(
+    SelectEdit::new(
         &mut self.text,
         ('a'..='z')
             .enumerate()
@@ -39,20 +39,20 @@ ui.add(
 );
 ```
 
-![](images/select_editor.gif)
+![](images/select_edit.gif)
 
-## ListViewer
+## ListView
 
-用于展示只读的列表。[示例](examples/list_viewer.rs)
+用于展示只读的列表。[示例](examples/list_view.rs)
 
-![](images/list_viewer.gif)
+![](images/list_view.gif)
 
 
-## ListEditor
+## ListEdit
 
-用于编辑列表。[示例](examples/list_editor.rs)
+用于编辑列表。[示例](examples/list_edit.rs)
 
-![](images/list_editor.gif)
+![](images/list_edit.gif)
 
 
 ## EguiTracing

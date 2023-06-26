@@ -10,8 +10,8 @@ use serde::{Deserialize, Serialize};
 mod container;
 mod item;
 
-pub use container::ListEditorContainer;
-pub use item::ListEditorItem;
+pub use container::ListEditContainer;
+pub use item::ListEditItem;
 
 static UI_TEXT: RwLock<UiText> = RwLock::new(UiText::DEFAULT);
 
@@ -30,13 +30,13 @@ pub fn set_ui_text(ui_text: UiText) {
 }
 
 #[derive(Debug)]
-pub struct ListEditor<'a, W: ListEditorItem, C: ListEditorContainer<W>> {
+pub struct ListEdit<'a, W: ListEditItem, C: ListEditContainer<W>> {
     pub container: &'a mut C,
     pub data: W::Data<'a>,
     pub default_open: bool,
 }
 
-impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> ListEditor<'a, W, C> {
+impl<'a, W: ListEditItem + 'static, C: ListEditContainer<W>> ListEdit<'a, W, C> {
     pub fn new(container: &'a mut C, data: W::Data<'a>) -> Self {
         Self {
             container,
@@ -52,17 +52,17 @@ impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> ListEditor<'a, 
 }
 
 #[derive(Debug, Serialize, Deserialize, Default, Clone)]
-pub struct ListEditorUiData<W: ListEditorItem> {
+pub struct ListEditorUiData<W: ListEditItem> {
     pub new: W,
     pub search: String,
 }
 
-impl<'a, W: ListEditorItem + 'static, C: ListEditorContainer<W>> Widget for ListEditor<'a, W, C> {
+impl<'a, W: ListEditItem + 'static, C: ListEditContainer<W>> Widget for ListEdit<'a, W, C> {
     fn ui(self, ui: &mut Ui) -> Response {
         ui.vertical(|ui| {
             let ui_text = *UI_TEXT.read();
 
-            let ListEditor {
+            let ListEdit {
                 container,
                 data,
                 default_open,

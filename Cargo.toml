@@ -1,6 +1,6 @@
 [package]
 name = "egui_widgets"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -12,12 +12,12 @@ egui = { version = "0.22", default-features = false }
 
 
 [features]
-default = ["select_editor", "option_value", "list_viewer"]
+default = ["select_edit", "option_value", "list_view"]
 
-select_editor = []
+select_edit = []
 option_value = []
-list_viewer = ["dep:parking_lot"]
-list_editor = ["dep:serde", "dep:parking_lot"]
+list_view = ["dep:parking_lot"]
+list_edit = ["dep:serde", "dep:parking_lot"]
 tracing = ["dep:egui_tracing"]
 
 
@@ -33,20 +33,20 @@ tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
 
 [[example]]
-name = "select_editor"
-required-features = ["select_editor"]
+name = "select_edit"
+required-features = ["select_edit"]
 
 [[example]]
 name = "option_value"
 required-features = ["option_value"]
 
 [[example]]
-name = "list_viewer"
-required-features = ["list_viewer"]
+name = "list_view"
+required-features = ["list_view"]
 
 [[example]]
-name = "list_editor"
-required-features = ["list_editor"]
+name = "list_edit"
+required-features = ["list_edit"]
 
 [[example]]
 name = "tracing"

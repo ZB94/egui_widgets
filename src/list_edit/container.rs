@@ -1,6 +1,6 @@
-use super::ListEditorItem;
+use super::ListEditItem;
 
-pub trait ListEditorContainer<W: ListEditorItem> {
+pub trait ListEditContainer<W: ListEditItem> {
     fn retain_mut<F: FnMut(&mut W) -> bool>(&mut self, f: F);
 
     fn add(&mut self, i: W);
@@ -8,7 +8,7 @@ pub trait ListEditorContainer<W: ListEditorItem> {
     fn append(&mut self, o: Vec<W>);
 }
 
-impl<W: ListEditorItem> ListEditorContainer<W> for Vec<W> {
+impl<W: ListEditItem> ListEditContainer<W> for Vec<W> {
     #[inline]
     fn retain_mut<F: FnMut(&mut W) -> bool>(&mut self, f: F) {
         self.retain_mut(f);

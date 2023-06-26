@@ -1,5 +1,5 @@
 use egui::{Id, Label, RichText, ScrollArea, TextEdit};
-pub use item::ListViewerItem;
+pub use item::ListViewItem;
 use parking_lot::RwLock;
 
 mod item;
@@ -12,13 +12,13 @@ pub fn set_search_hint_text(text: &'static str) {
 }
 
 #[derive(Debug)]
-pub struct ListViewer<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> {
+pub struct ListView<'a, W: ListViewItem + 'a, L: Iterator<Item = &'a W>> {
     pub container: L,
     pub data: W::Data<'a>,
     pub height: f32,
 }
 
-impl<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> ListViewer<'a, W, L> {
+impl<'a, W: ListViewItem + 'a, L: Iterator<Item = &'a W>> ListView<'a, W, L> {
     pub fn new(container: L, data: W::Data<'a>) -> Self {
         Self {
             container,
@@ -34,12 +34,12 @@ impl<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> ListViewer<'a, W, L>
     }
 }
 
-impl<'a, W: ListViewerItem + 'a, L: Iterator<Item = &'a W>> ListViewer<'a, W, L> {
+impl<'a, W: ListViewItem + 'a, L: Iterator<Item = &'a W>> ListView<'a, W, L> {
     pub fn show(self, ui: &mut egui::Ui) -> egui::InnerResponse<Option<&'a W>> {
         let mut selected_item = None;
 
         let mut resp = ui.vertical(|ui| {
-            let ListViewer {
+            let ListView {
                 container,
                 data,
                 height,

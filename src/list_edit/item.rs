@@ -1,6 +1,6 @@
 use egui::Ui;
 
-pub trait ListEditorItem: Clone + Default + Send + Sync {
+pub trait ListEditItem: Clone + Default + Send + Sync {
     type Data<'a>: Copy;
 
     fn new_title(&self, _data: Self::Data<'_>) -> String;

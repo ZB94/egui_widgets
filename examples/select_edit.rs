@@ -1,10 +1,10 @@
 use eframe::App;
 use egui::CentralPanel;
-use egui_widgets::SelectEditor;
+use egui_widgets::SelectEdit;
 
 fn main() {
     let _ = eframe::run_native(
-        "SelectEditor Example",
+        "SelectEdit Example",
         Default::default(),
         Box::new(|_| {
             Box::new(Application {
@@ -21,7 +21,7 @@ struct Application {
 impl App for Application {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         CentralPanel::default().show(ctx, |ui| {
-            ui.add(SelectEditor::new(
+            ui.add(SelectEdit::new(
                 &mut self.text,
                 ('a'..='z')
                     .enumerate()
@@ -29,7 +29,7 @@ impl App for Application {
             ));
 
             ui.add(
-                SelectEditor::new(
+                SelectEdit::new(
                     &mut self.text,
                     ('a'..='z')
                         .enumerate()

@@ -1,6 +1,6 @@
 use egui::{Id, Ui};
 
-pub trait ListViewerItem {
+pub trait ListViewItem {
     type Data<'a>: Copy;
 
     fn title() -> &'static str;

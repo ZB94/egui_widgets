@@ -1,4 +1,4 @@
-use egui::{ScrollArea, Widget};
+use egui::{ScrollArea, TextEdit, Widget};
 
 pub struct SelectEdit<'a, S, L>
 where
@@ -8,6 +8,7 @@ where
     pub text: &'a mut String,
     pub iter: L,
     pub filter: bool,
+    pub hint_text: Option<&'a str>,
 }
 
 impl<'a, S, L> SelectEdit<'a, S, L>
@@ -20,12 +21,20 @@ where
             text,
             iter,
             filter: false,
+            hint_text: None,
         }
     }
 
     pub fn filter(self) -> Self {
         Self {
             filter: true,
+            ..self
+        }
+    }
+
+    pub fn hint_text(self, hint_text: impl Into<Option<&'a str>>) -> Self {
+        Self {
+            hint_text: hint_text.into(),
             ..self
         }
     }
@@ -37,7 +46,13 @@ where
     L: Iterator<Item = S>,
 {
     fn ui(self, ui: &mut egui::Ui) -> egui::Response {
-        let mut resp = ui.text_edit_singleline(self.text);
+        let mut text_edit = TextEdit::singleline(self.text);
+
+        if let Some(hint_text) = self.hint_text {
+            text_edit = text_edit.hint_text(hint_text);
+        }
+
+        let mut resp = ui.add(text_edit);
         let mut changed = resp.changed();
 
         let popup_id = ui.auto_id_with(module_path!()).with("select editor popup");

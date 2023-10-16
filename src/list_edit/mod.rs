@@ -142,6 +142,10 @@ impl<'a, W: ListEditItem + 'static, C: ListEditContainer<W>> Widget for ListEdit
 
                 state.show_body_indented(&resp.response, ui, |ui| w.ui(ui, data));
 
+                if remove {
+                    state.remove(ui.ctx());
+                }
+
                 !remove
             });
 

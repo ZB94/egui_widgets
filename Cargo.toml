@@ -1,14 +1,15 @@
 [package]
 name = "egui_widgets"
-version = "0.4.0"
+version = "0.5.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [workspace]
 members = ["egui_tracing"]
+resolver = "2"
 
 [workspace.dependencies]
-egui = { version = "0.22", default-features = false }
+egui = { version = "0.23", default-features = false }
 
 
 [features]
@@ -23,14 +24,14 @@ tracing = ["dep:egui_tracing"]
 
 [dependencies]
 egui = { workspace = true }
-egui_tracing = { version = "0.4.0", path = "egui_tracing", optional = true }
+egui_tracing = { version = "0.5.0", path = "egui_tracing", optional = true }
 parking_lot = { version = "0.12.1", optional = true }
 serde = { version = "1", features = ["derive"], optional = true }
 
 [dev-dependencies]
-eframe = "0.22"
-tracing = "0.1.37"
-tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
+eframe = "0.23"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 [[example]]
 name = "select_edit"

@@ -11,7 +11,7 @@ mod container;
 mod item;
 
 pub use container::ListEditContainer;
-pub use item::ListEditItem;
+pub use item::{ListEditItem, StringData};
 
 static UI_TEXT: RwLock<UiText> = RwLock::new(UiText::DEFAULT);
 

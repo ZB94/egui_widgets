@@ -70,10 +70,12 @@ impl<'a, W: ListEditItem + 'static, C: ListEditContainer<W>> Widget for ListEdit
             } = self;
             let id = ui.next_auto_id();
 
+            let new_index = container.len();
+
             let data_id = id.with("data");
             let mut ui_data: ListEditorUiData<W> = ui.data_mut(|d| {
                 d.get_temp(data_id).unwrap_or_else(|| ListEditorUiData {
-                    new: W::new(data).unwrap_or_default(),
+                    new: W::new(data, new_index).unwrap_or_default(),
                     search: String::new(),
                 })
             });
@@ -83,25 +85,29 @@ impl<'a, W: ListEditItem + 'static, C: ListEditContainer<W>> Widget for ListEdit
             let resp = ui.horizontal_top(|ui| {
                 ui.with_layout(Layout::right_to_left(Align::TOP), |ui| {
                     if ui.button(ui_text.add).clicked() {
-                        let mut new = W::new(data).unwrap_or_default();
+                        let mut new = W::new(data, new_index).unwrap_or_default();
                         std::mem::swap(&mut ui_data.new, &mut new);
                         container.add(new);
                     }
 
                     if ui.button(ui_text.reset).clicked() {
-                        ui_data.new = W::new(data).unwrap_or_default();
+                        ui_data.new = W::new(data, new_index).unwrap_or_default();
                     }
 
                     ui.with_layout(Layout::left_to_right(Align::TOP), |ui| {
-                        if paint_title(ui_data.new.new_title(data), ui, state.openness(ui.ctx()))
-                            .clicked()
+                        if paint_title(
+                            ui_data.new.new_title(data, new_index),
+                            ui,
+                            state.openness(ui.ctx()),
+                        )
+                        .clicked()
                         {
                             state.toggle(ui);
                         }
                     });
                 });
             });
-            state.show_body_indented(&resp.response, ui, |ui| ui_data.new.ui(ui, data));
+            state.show_body_indented(&resp.response, ui, |ui| ui_data.new.ui(ui, data, new_index));
 
             ui.separator();
 
@@ -114,9 +120,10 @@ impl<'a, W: ListEditItem + 'static, C: ListEditContainer<W>> Widget for ListEdit
             let mut idx = 0;
             container.retain_mut(|w| {
                 let id = id.with(idx);
+                let index = idx;
                 idx += 1;
 
-                if !ui_data.search.is_empty() && !w.on_search(&ui_data.search, data) {
+                if !ui_data.search.is_empty() && !w.on_search(&ui_data.search, data, index) {
                     return true;
                 }
 
@@ -133,14 +140,16 @@ impl<'a, W: ListEditItem + 'static, C: ListEditContainer<W>> Widget for ListEdit
                         }
 
                         ui.with_layout(Layout::left_to_right(Align::TOP), |ui| {
-                            if paint_title(w.title(data), ui, state.openness(ui.ctx())).clicked() {
+                            if paint_title(w.title(data, index), ui, state.openness(ui.ctx()))
+                                .clicked()
+                            {
                                 state.toggle(ui);
                             }
                         });
                     });
                 });
 
-                state.show_body_indented(&resp.response, ui, |ui| w.ui(ui, data));
+                state.show_body_indented(&resp.response, ui, |ui| w.ui(ui, data, index));
 
                 if remove {
                     state.remove(ui.ctx());

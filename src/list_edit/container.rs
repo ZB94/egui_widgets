@@ -6,6 +6,8 @@ pub trait ListEditContainer<W: ListEditItem> {
     fn add(&mut self, i: W);
 
     fn append(&mut self, o: Vec<W>);
+
+    fn len(&self) -> usize;
 }
 
 impl<W: ListEditItem> ListEditContainer<W> for Vec<W> {
@@ -22,5 +24,10 @@ impl<W: ListEditItem> ListEditContainer<W> for Vec<W> {
     #[inline]
     fn append(&mut self, mut o: Vec<W>) {
         self.append(&mut o);
+    }
+
+    #[inline]
+    fn len(&self) -> usize {
+        Vec::len(self)
     }
 }

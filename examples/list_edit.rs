@@ -40,15 +40,15 @@ struct Item {
 impl ListEditItem for Item {
     type Data<'a> = ();
 
-    fn new_title(&self, _data: Self::Data<'_>) -> String {
+    fn new_title(&self, _data: Self::Data<'_>, _index: usize) -> String {
         "new item".to_string()
     }
 
-    fn title(&self, _data: Self::Data<'_>) -> String {
+    fn title(&self, _data: Self::Data<'_>, _index: usize) -> String {
         self.name.clone()
     }
 
-    fn ui(&mut self, ui: &mut egui::Ui, _data: Self::Data<'_>) {
+    fn ui(&mut self, ui: &mut egui::Ui, _data: Self::Data<'_>, _index: usize) {
         Grid::new(ui.auto_id_with("grid"))
             .num_columns(2)
             .striped(true)
@@ -63,11 +63,11 @@ impl ListEditItem for Item {
             });
     }
 
-    fn new(_data: Self::Data<'_>) -> Option<Self> {
+    fn new(_data: Self::Data<'_>, _index: usize) -> Option<Self> {
         Some(Default::default())
     }
 
-    fn on_search(&self, text: &str, _data: Self::Data<'_>) -> bool {
+    fn on_search(&self, text: &str, _data: Self::Data<'_>, _index: usize) -> bool {
         self.name.contains(text)
     }
 }

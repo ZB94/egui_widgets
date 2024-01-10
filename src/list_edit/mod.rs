@@ -224,7 +224,7 @@ pub fn paint_title(text: String, ui: &mut Ui, openness: f32) -> Response {
         response.rect.top(),
     );
     ui.painter()
-        .galley_with_color(pos, galley, visuals.fg_stroke.color);
+        .galley_with_override_text_color(pos, galley, visuals.fg_stroke.color);
 
     response
 }

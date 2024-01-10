@@ -8,6 +8,11 @@ pub trait ListEditContainer<W: ListEditItem> {
     fn append(&mut self, o: Vec<W>);
 
     fn len(&self) -> usize;
+
+    #[inline]
+    fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }
 
 impl<W: ListEditItem> ListEditContainer<W> for Vec<W> {

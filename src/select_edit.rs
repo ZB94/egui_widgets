@@ -68,14 +68,17 @@ where
                         if !press
                             && ui.ctx().input(|state| {
                                 state.events.iter().any(|e| {
-                                    matches!(
-                                        e,
-                                        Event::PointerButton {
-                                            button: PointerButton::Primary,
-                                            pressed: true,
-                                            ..
-                                        }
-                                    )
+                                    let Event::PointerButton {
+                                        button: PointerButton::Primary,
+                                        pressed: true,
+                                        pos,
+                                        ..
+                                    } = e
+                                    else {
+                                        return false;
+                                    };
+
+                                    r.rect.contains(*pos)
                                 })
                             })
                         {

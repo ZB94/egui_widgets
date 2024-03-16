@@ -1,4 +1,4 @@
-use egui::{ScrollArea, TextEdit, Widget};
+use egui::{Event, PointerButton, ScrollArea, TextEdit, Widget};
 
 pub struct SelectEdit<'a, S, L>
 where
@@ -57,19 +57,38 @@ where
 
         let popup_id = ui.auto_id_with(module_path!()).with("select editor popup");
 
+        let mut press = false;
         egui::popup_below_widget(ui, popup_id, &resp, |ui| {
             ScrollArea::vertical().max_height(100.0).show(ui, |ui| {
                 for item in self.iter {
                     let text = item.to_string();
                     if self.text.is_empty() || !self.filter || text.contains(self.text.as_str()) {
-                        changed =
-                            ui.selectable_value(self.text, text.clone(), text).clicked() || changed;
+                        let r = ui.selectable_value(self.text, text.clone(), text);
+
+                        if !press
+                            && ui.ctx().input(|state| {
+                                state.events.iter().any(|e| {
+                                    matches!(
+                                        e,
+                                        Event::PointerButton {
+                                            button: PointerButton::Primary,
+                                            pressed: true,
+                                            ..
+                                        }
+                                    )
+                                })
+                            })
+                        {
+                            press = true;
+                        }
+
+                        changed = r.clicked() || changed;
                     }
                 }
             });
         });
 
-        if resp.lost_focus() {
+        if !press && resp.lost_focus() {
             ui.memory_mut(|mem| mem.close_popup())
         } else if resp.has_focus() && !ui.memory(|mem| mem.is_popup_open(popup_id)) {
             ui.memory_mut(|mem| mem.open_popup(popup_id));

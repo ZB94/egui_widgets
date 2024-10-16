@@ -63,7 +63,7 @@ impl<'a, W: ListViewItem + 'a, L: Iterator<Item = &'a W>> ListView<'a, W, L> {
                 ui.separator();
 
                 ScrollArea::vertical()
-                    .id_source(base_id.with("list"))
+                    .id_salt(base_id.with("list"))
                     .max_height(height)
                     .auto_shrink([false, false])
                     .show(ui, |ui| {

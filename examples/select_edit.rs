@@ -7,9 +7,9 @@ fn main() {
         "SelectEdit Example",
         Default::default(),
         Box::new(|_| {
-            Box::new(Application {
+            Ok(Box::new(Application {
                 text: Default::default(),
-            })
+            }))
         }),
     );
 }

@@ -7,14 +7,14 @@ fn main() {
         "ListEdit Example",
         Default::default(),
         Box::new(|_| {
-            Box::new(Application {
+            Ok(Box::new(Application {
                 list: (0..5)
                     .map(|id| Item {
                         id,
                         name: format!("{id:#04X}"),
                     })
                     .collect(),
-            })
+            }))
         }),
     );
 }
@@ -54,7 +54,7 @@ impl ListEditItem for Item {
             .striped(true)
             .show(ui, |ui| {
                 ui.label("id");
-                ui.add(DragValue::new(&mut self.id).clamp_range(0..=500));
+                ui.add(DragValue::new(&mut self.id).range(0..=500));
                 ui.end_row();
 
                 ui.label("name");

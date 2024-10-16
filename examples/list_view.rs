@@ -7,14 +7,14 @@ fn main() {
         "ListView Example",
         Default::default(),
         Box::new(|_| {
-            Box::new(Application {
+            Ok(Box::new(Application {
                 list: (0..100)
                     .map(|id| Item {
                         id,
                         name: format!("{id:#04X}"),
                     })
                     .collect(),
-            })
+            }))
         }),
     );
 }

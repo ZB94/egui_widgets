@@ -31,7 +31,7 @@ fn main() {
     let _ = eframe::run_native(
         "example",
         Default::default(),
-        Box::new(|_| Box::new(Example(widget))),
+        Box::new(|_| Ok(Box::new(Example(widget)))),
     );
 }
 

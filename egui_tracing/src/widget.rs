@@ -69,7 +69,7 @@ impl EguiLog {
 impl EguiLog {
     fn ui_filter(&mut self, ui: &mut Ui) {
         CollapsingHeader::new(&self.display_info.filter)
-            .id_source(ui.auto_id_with("filter"))
+            .id_salt(ui.auto_id_with("filter"))
             .default_open(false)
             .show(ui, |ui| {
                 Grid::new(ui.auto_id_with("filter grid"))
@@ -85,7 +85,7 @@ impl EguiLog {
                             if let Some(level) = &mut self.filter_level {
                                 let (text, color) = level_info(*level, ui);
 
-                                ComboBox::from_id_source(ui.auto_id_with("filter level"))
+                                ComboBox::from_id_salt(ui.auto_id_with("filter level"))
                                     .selected_text(RichText::new(text).color(color))
                                     .show_ui(ui, |ui| {
                                         for l in [
@@ -172,7 +172,7 @@ impl Widget for &mut EguiLog {
                                             log.span_data.iter().enumerate()
                                         {
                                             CollapsingHeader::new(*span)
-                                                .id_source(ui.auto_id_with(span_idx))
+                                                .id_salt(ui.auto_id_with(span_idx))
                                                 .default_open(false)
                                                 .show(ui, |ui| {
                                                     ui_map(ui, map);

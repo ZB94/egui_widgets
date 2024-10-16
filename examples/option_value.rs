@@ -6,7 +6,7 @@ fn main() {
     let _ = eframe::run_native(
         "OptionValue Example",
         Default::default(),
-        Box::new(|_| Box::new(Application { option_value: None })),
+        Box::new(|_| Ok(Box::new(Application { option_value: None }))),
     );
 }
 

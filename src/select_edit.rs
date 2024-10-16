@@ -1,4 +1,4 @@
-use egui::{Event, PointerButton, ScrollArea, TextEdit, Widget};
+use egui::{Event, PointerButton, PopupCloseBehavior, ScrollArea, TextEdit, Widget};
 
 pub struct SelectEdit<'a, S, L>
 where
@@ -58,38 +58,45 @@ where
         let popup_id = ui.auto_id_with(module_path!()).with("select editor popup");
 
         let mut press = false;
-        egui::popup_below_widget(ui, popup_id, &resp, |ui| {
-            ScrollArea::vertical().max_height(100.0).show(ui, |ui| {
-                for item in self.iter {
-                    let text = item.to_string();
-                    if self.text.is_empty() || !self.filter || text.contains(self.text.as_str()) {
-                        let r = ui.selectable_value(self.text, text.clone(), text);
-
-                        if !press
-                            && ui.ctx().input(|state| {
-                                state.events.iter().any(|e| {
-                                    let Event::PointerButton {
-                                        button: PointerButton::Primary,
-                                        pressed: true,
-                                        pos,
-                                        ..
-                                    } = e
-                                    else {
-                                        return false;
-                                    };
-
-                                    r.rect.contains(*pos)
-                                })
-                            })
+        egui::popup_below_widget(
+            ui,
+            popup_id,
+            &resp,
+            PopupCloseBehavior::CloseOnClick,
+            |ui| {
+                ScrollArea::vertical().max_height(100.0).show(ui, |ui| {
+                    for item in self.iter {
+                        let text = item.to_string();
+                        if self.text.is_empty() || !self.filter || text.contains(self.text.as_str())
                         {
-                            press = true;
-                        }
+                            let r = ui.selectable_value(self.text, text.clone(), text);
 
-                        changed = r.clicked() || changed;
+                            if !press
+                                && ui.ctx().input(|state| {
+                                    state.events.iter().any(|e| {
+                                        let Event::PointerButton {
+                                            button: PointerButton::Primary,
+                                            pressed: true,
+                                            pos,
+                                            ..
+                                        } = e
+                                        else {
+                                            return false;
+                                        };
+
+                                        r.rect.contains(*pos)
+                                    })
+                                })
+                            {
+                                press = true;
+                            }
+
+                            changed = r.clicked() || changed;
+                        }
                     }
-                }
-            });
-        });
+                });
+            },
+        );
 
         if !press && resp.lost_focus() {
             ui.memory_mut(|mem| mem.close_popup())

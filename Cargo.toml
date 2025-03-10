@@ -1,6 +1,6 @@
 [package]
 name = "egui_widgets"
-version = "0.10.0"
+version = "0.11.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -9,8 +9,8 @@ members = ["egui_tracing"]
 resolver = "2"
 
 [workspace.dependencies]
-egui = { version = "0.29", default-features = false }
-
+egui = { version = "0.31", default-features = false }
+parking_lot = { version = "0.12.1" }
 
 [features]
 default = ["select_edit", "option_value", "list_view"]
@@ -25,11 +25,11 @@ tracing = ["dep:egui_tracing"]
 [dependencies]
 egui = { workspace = true }
 egui_tracing = { version = "0.5.0", path = "egui_tracing", optional = true }
-parking_lot = { version = "0.12.1", optional = true }
+parking_lot = { workspace = true, optional = true }
 serde = { version = "1", features = ["derive"], optional = true }
 
 [dev-dependencies]
-eframe = "0.29"
+eframe = "0.31"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 

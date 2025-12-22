@@ -1,4 +1,4 @@
-use egui::{Event, PointerButton, PopupCloseBehavior, ScrollArea, TextEdit, Widget};
+use egui::{Popup, PopupCloseBehavior, ScrollArea, TextEdit, Widget};
 
 pub struct SelectEdit<'a, S, L>
 where
@@ -57,51 +57,34 @@ where
 
         let popup_id = ui.auto_id_with(module_path!()).with("select editor popup");
 
-        let mut press = false;
-        egui::popup_below_widget(
-            ui,
-            popup_id,
-            &resp,
-            PopupCloseBehavior::CloseOnClick,
-            |ui| {
-                ScrollArea::vertical().max_height(100.0).show(ui, |ui| {
-                    for item in self.iter {
-                        let text = item.to_string();
-                        if self.text.is_empty() || !self.filter || text.contains(self.text.as_str())
-                        {
-                            let r = ui.selectable_value(self.text, text.clone(), text);
-
-                            if !press
-                                && ui.ctx().input(|state| {
-                                    state.events.iter().any(|e| {
-                                        let Event::PointerButton {
-                                            button: PointerButton::Primary,
-                                            pressed: true,
-                                            pos,
-                                            ..
-                                        } = e
-                                        else {
-                                            return false;
-                                        };
-
-                                        r.rect.contains(*pos)
-                                    })
-                                })
+        egui::Popup::menu(&resp)
+            .id(popup_id)
+            .close_behavior(PopupCloseBehavior::IgnoreClicks)
+            .show(|ui| {
+                ui.set_width(
+                    resp.rect.width()
+                        - ui.style().spacing.menu_margin.leftf()
+                        - ui.style().spacing.menu_margin.rightf(),
+                );
+                ScrollArea::vertical()
+                    // .max_width(resp.rect.width())
+                    .max_height(100.0)
+                    .show(ui, |ui| {
+                        for item in self.iter {
+                            let text = item.to_string();
+                            if self.text.is_empty()
+                                || !self.filter
+                                || text.contains(self.text.as_str())
                             {
-                                press = true;
+                                let r = ui.selectable_value(self.text, text.clone(), text);
+                                changed = r.clicked() || changed;
                             }
-
-                            changed = r.clicked() || changed;
                         }
-                    }
-                });
-            },
-        );
+                    });
+            });
 
-        if !press && resp.lost_focus() {
-            ui.memory_mut(|mem| mem.close_popup())
-        } else if resp.has_focus() && !ui.memory(|mem| mem.is_popup_open(popup_id)) {
-            ui.memory_mut(|mem| mem.open_popup(popup_id));
+        if resp.lost_focus() && Popup::is_id_open(ui.ctx(), popup_id) {
+            Popup::close_id(ui.ctx(), popup_id);
         }
 
         if changed {

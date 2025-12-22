@@ -187,7 +187,7 @@ pub fn paint_title(text: String, ui: &mut Ui, openness: f32) -> Response {
     rect_min.x += text_offset_x;
 
     for row in &galley.rows {
-        let rect = Rect::from_min_size(rect_min, row.rect.size());
+        let rect = Rect::from_min_size(rect_min, row.size);
         response = response.union(ui.allocate_rect(rect, sense));
 
         rect_min.y += rect.height();

@@ -1,8 +1,8 @@
 use crate::layer::LogRecord;
 use crossbeam_channel::Receiver;
 use egui::{
-    CollapsingHeader, Color32, ComboBox, Grid, Response, RichText, ScrollArea, SelectableLabel,
-    TextEdit, TextStyle, Ui, Widget,
+    Button, CollapsingHeader, Color32, ComboBox, Grid, Response, RichText, ScrollArea, TextEdit,
+    TextStyle, Ui, Widget,
 };
 use std::{cmp::Ordering, collections::HashMap};
 use tracing::Level;
@@ -97,7 +97,7 @@ impl EguiLog {
                                         ] {
                                             let (text, color) = level_info(l, ui);
                                             if ui
-                                                .add(SelectableLabel::new(
+                                                .add(Button::selectable(
                                                     level == &l,
                                                     RichText::new(text).color(color),
                                                 ))
@@ -225,7 +225,7 @@ fn ui_text(ui: &mut Ui, mut text: &str) {
     let font_id = &ui.style().text_styles[&TextStyle::Body];
 
     // 8.0 为TextEdit外边距
-    let (lines, width) = ui.fonts(|font| {
+    let (lines, width) = ui.fonts_mut(|font| {
         text.lines()
             .map(|line| line.chars().map(|c| font.glyph_width(font_id, c)).sum())
             .enumerate()

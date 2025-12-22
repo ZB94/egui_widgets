@@ -1,54 +1,83 @@
 [package]
 name = "egui_widgets"
-version = "0.11.0"
+version = "0.12.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [workspace]
-members = ["egui_tracing"]
+members = [
+    "egui_tracing",
+]
 resolver = "2"
 
 [workspace.dependencies]
-egui = { version = "0.31", default-features = false }
+egui = { version = "0.33", default-features = false }
 parking_lot = { version = "0.12.1" }
 
 [features]
-default = ["select_edit", "option_value", "list_view"]
+default = [
+    "select_edit",
+    "option_value",
+    "list_view",
+]
 
-select_edit = []
-option_value = []
-list_view = ["dep:parking_lot"]
-list_edit = ["dep:serde", "dep:parking_lot"]
-tracing = ["dep:egui_tracing"]
+select_edit = [
+]
+option_value = [
+]
+list_view = [
+    "dep:parking_lot",
+]
+list_edit = [
+    "dep:serde",
+    "dep:parking_lot",
+]
+tracing = [
+    "dep:egui_tracing",
+]
 
 
 [dependencies]
 egui = { workspace = true }
 egui_tracing = { version = "0.5.0", path = "egui_tracing", optional = true }
 parking_lot = { workspace = true, optional = true }
-serde = { version = "1", features = ["derive"], optional = true }
+serde = { version = "1", features = [
+    "derive",
+], optional = true }
 
 [dev-dependencies]
-eframe = "0.31"
+eframe = "0.33"
 tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-subscriber = { version = "0.3", features = [
+    "env-filter",
+] }
 
 [[example]]
 name = "select_edit"
-required-features = ["select_edit"]
+required-features = [
+    "select_edit",
+]
 
 [[example]]
 name = "option_value"
-required-features = ["option_value"]
+required-features = [
+    "option_value",
+]
 
 [[example]]
 name = "list_view"
-required-features = ["list_view"]
+required-features = [
+    "list_view",
+]
 
 [[example]]
 name = "list_edit"
-required-features = ["list_edit"]
+required-features = [
+    "list_edit",
+]
 
 [[example]]
 name = "tracing"
-required-features = ["tracing"]
+required-features = [
+    "tracing",
+]

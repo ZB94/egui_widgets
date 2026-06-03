@@ -1,5 +1,5 @@
 use eframe::App;
-use egui::{CentralPanel, DragValue, Grid, ScrollArea};
+use egui::{DragValue, Grid, ScrollArea};
 use egui_widgets::list_edit::{ListEdit, ListEditItem};
 
 fn main() {
@@ -24,8 +24,8 @@ struct Application {
 }
 
 impl App for Application {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        CentralPanel::default().show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        egui::CentralPanel::default().show_inside(ui, |ui| {
             ScrollArea::vertical().show(ui, |ui| ui.add(ListEdit::new(&mut self.list, ())));
         });
     }

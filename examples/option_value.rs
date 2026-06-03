@@ -1,5 +1,4 @@
 use eframe::App;
-use egui::CentralPanel;
 use egui_widgets::OptionValue;
 
 fn main() {
@@ -15,8 +14,8 @@ struct Application {
 }
 
 impl App for Application {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        CentralPanel::default().show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        egui::CentralPanel::default().show_inside(ui, |ui| {
             ui.add(OptionValue::new_full(
                 &mut self.option_value,
                 "Option String",

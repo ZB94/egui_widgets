@@ -2,7 +2,6 @@
 extern crate tracing;
 
 use eframe::{App, Frame};
-use egui::{CentralPanel, Context};
 use egui_widgets::tracing::{DisplayInfo, EguiLog};
 use tracing::Span;
 use tracing_subscriber::layer::SubscriberExt;
@@ -57,8 +56,8 @@ fn warp_log() {
 pub struct Example(pub EguiLog);
 
 impl App for Example {
-    fn update(&mut self, ctx: &Context, _frame: &mut Frame) {
-        CentralPanel::default().show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut Frame) {
+        egui::CentralPanel::default().show_inside(ui, |ui| {
             if ui.button("log").clicked() {
                 warp_log();
                 info!("clicked");
